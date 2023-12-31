@@ -1,7 +1,7 @@
 # decorators.py
 import time
 import logging
-from logging_conf import configure_logging
+from .logging_conf import configure_logging
 from functools import wraps
 
 
