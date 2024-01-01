@@ -36,8 +36,13 @@ def my_function():
     # Your function implementation
 ```
 
-Terminal output: 
-![My Image](docs/images/Screenshot1.png)
+<br>
+Terminal output:<br>
+<img
+  src="docs/images/Screenshot1.png"
+  alt="Alt text"
+  title="Optional title"
+  style="display: inline-block; margin: 0 auto; max-width: 500px">
 
 ### Advanced Usage
 
@@ -50,9 +55,13 @@ from timeguardian import time_func
 def another_function():
     # Another function implementation
 ```
-
-Terminal output: 
-![My Image](docs/images/Screenshot2.png)
+<br>
+Terminal output:<br>
+<img
+  src="docs/images/Screenshot2.png"
+  alt="Alt text"
+  title="Optional title"
+  style="display: inline-block; margin: 0 auto; max-width: 500px">
 
 ## Contributing
 
