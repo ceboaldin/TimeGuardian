@@ -42,7 +42,7 @@ Terminal output:<br>
   src="docs/images/Screenshot1.png"
   alt="Alt text"
   title="Optional title"
-  style="display: inline-block; margin: 0 auto; max-width: 500px">
+  style="display: inline-block; margin: 0 auto; max-width: 400px">
 
 ### Advanced Usage
 
@@ -61,7 +61,7 @@ Terminal output:<br>
   src="docs/images/Screenshot2.png"
   alt="Alt text"
   title="Optional title"
-  style="display: inline-block; margin: 0 auto; max-width: 500px">
+  style="display: inline-block; margin: 0 auto; max-width: 400px">
 
 ## Contributing
 
