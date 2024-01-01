@@ -36,6 +36,9 @@ def my_function():
     # Your function implementation
 ```
 
+Terminal output: 
+![My Image](docs/images/Screenshot1.png)
+
 ### Advanced Usage
 
 You can also provide a custom name for logging the execution time:
@@ -47,6 +50,9 @@ from timeguardian import time_func
 def another_function():
     # Another function implementation
 ```
+
+Terminal output: 
+![My Image](docs/images/Screenshot2.png)
 
 ## Contributing
 
