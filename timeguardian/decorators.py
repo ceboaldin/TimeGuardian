@@ -34,16 +34,22 @@ def time_func(_func=None, *, name=None):
         @wraps(func)
         def wrapper(*args, **kwargs):
             start = time.time()
-            result = func(*args, **kwargs)
-            end = time.time()
-            elapsed_time = (end - start) * 1000
-
-            if name:
-                logger.info(f'{name} - Elapsed time: {elapsed_time:.3f}ms')
+            try:
+                result = func(*args, **kwargs)
+            except Exception as e:
+                end = time.time()
+                logger.error(f"Exception in {func.__name__}: {e}")
+                logger.info(f"Elapsed time until exception: {(end - start) * 1000:.3f}ms")
+                raise  # Re-raises the caught exception
             else:
-                logger.info(f'Elapsed time: {elapsed_time:.3f}ms')
+                end = time.time()
+                elapsed_time = (end - start) * 1000
+                if name:
+                    logger.info(f'{name} - Elapsed time: {elapsed_time:.3f}ms')
+                else:
+                    logger.info(f'Elapsed time: {elapsed_time:.3f}ms')
 
-            return result
+                return result
         return wrapper
 
     if _func is None:
