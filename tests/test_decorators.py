@@ -1,56 +1,21 @@
-import unittest
-from unittest.mock import patch
-from timeguardian.decorators import time_func
-import time
+# test_decorators.py
+import pytest
+from unittest.mock import ANY
 
-# Test suite for the time_func decorator in the timeguardian.decorators module.
-class TestTimeFuncDecorator(unittest.TestCase):
+def test_simple_function(simple_function, mocker):
+    mock_logger = mocker.patch('timeguardian.decorators.logger')
+    result = simple_function()
+    assert result == "test"
+    mock_logger.info.assert_called()
 
-    # Test the time_func decorator when applied without a custom name.
-    # This test checks if the decorator correctly logs the execution time
-    # and ensures that the function's return value is not altered.
-    @patch('timeguardian.decorators.logger')
-    def test_decorator_without_custom_name(self, mock_logger):
-        # Function decorated with time_func
-        @time_func
-        def sample_function():
-            return "test"
+def test_delayed_function_with_custom_name(delayed_function, mocker):
+    mock_logger = mocker.patch('timeguardian.decorators.logger')
+    result = delayed_function()
+    assert result == "done"
+    mock_logger.info.assert_called_with(ANY)
 
-        # Call the decorated function and check return value
-        result = sample_function()
-        self.assertEqual(result, "test")  # Verify return value remains unchanged
-
-        # Verify if logger.info was called, indicating logging occurred
-        self.assertTrue(mock_logger.info.called)
-
-    # Test the time_func decorator with a custom name provided.
-    # This test verifies if the custom name is correctly used in the log message.
-    @patch('timeguardian.decorators.logger')
-    def test_decorator_with_custom_name(self, mock_logger):
-        # Function decorated with time_func and a custom name
-        @time_func(name="CustomFunction")
-        def another_function():
-            return 42
-
-        # Call the decorated function and check return value
-        result = another_function()
-        self.assertEqual(result, 42)  # Verify return value remains unchanged
-
-        # Check if logger.info was called with any argument
-        mock_logger.info.assert_called_with(unittest.mock.ANY)  
-
-    # Test to verify the actual time measurement functionality of the decorator.
-    # This test checks if the logging includes a mention of elapsed time.
-    @patch('timeguardian.decorators.logger')
-    def test_time_measurement(self, mock_logger):
-        # Function decorated with time_func, including a deliberate delay
-        @time_func
-        def delay_function():
-            time.sleep(0.1)  # Introducing a small delay
-
-        # Call the decorated function
-        delay_function()
-
-        # Extract the logged message and verify it includes elapsed time info
-        args, _ = mock_logger.info.call_args
-        self.assertTrue("Elapsed time:" in args[0])  # Check for elapsed time in log
+def test_decorator_with_exception(function_that_raises, mocker):
+    mock_logger = mocker.patch('timeguardian.decorators.logger')
+    with pytest.raises(ValueError):
+        function_that_raises()
+    mock_logger.error.assert_called_with(ANY)
