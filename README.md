@@ -24,16 +24,16 @@ pip install timeguardian
 
 ## Usage
 
-Import `time_func` from the `timeguardian` package and use it as a decorator on your functions to measure their execution time.
+Import `TimeGuardian` from the `timeguardian` package and use it as a decorator on your functions to measure their execution time.
 
 ### Basic Usage
 
 ```python
-from timeguardian import time_func
+from timeguardian import TimeGuardian
 
-@time_func
+@TimeGuardian.measure
 def my_function():
-    # Your function implementation
+    # function implementation
 ```
 
 <br>
@@ -49,11 +49,11 @@ Terminal output:<br>
 You can also provide a custom name for logging the execution time:
 
 ```python
-from timeguardian import time_func
+from timeguardian import TimeGuardian
 
-@time_func(name="CustomFunctionName")
+@TimeGuardian.measure(name="CustomFunctionName")
 def another_function():
-    # Another function implementation
+    # function implementation
 ```
 <br>
 Terminal output:<br>

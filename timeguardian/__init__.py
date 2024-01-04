@@ -1,1 +1,1 @@
-from .decorators import time_func
+from .decorators import TimeGuardian
