@@ -1,18 +1,18 @@
 # conftest.py
 import pytest
-from timeguardian.decorators import time_func
+from timeguardian.decorators import TimeGuardian
 import time
 
 @pytest.fixture
 def simple_function():
-    @time_func
+    @TimeGuardian.measure
     def function():
         return "test"
     return function
 
 @pytest.fixture
 def delayed_function():
-    @time_func
+    @TimeGuardian.measure
     def function():
         time.sleep(0.1)
         return "done"
@@ -20,7 +20,7 @@ def delayed_function():
 
 @pytest.fixture
 def function_that_raises():
-    @time_func
+    @TimeGuardian.measure
     def function():
         raise ValueError("Test Error")
     return function
