@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="timeguardian",
-    version="0.0.1",
+    version="0.0.2",
     author="Aldin Cebo",
     author_email="ceboaldin@gmail.com",
     description="TimeGuardian is a package for execution time measurement",
