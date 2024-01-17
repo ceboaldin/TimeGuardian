@@ -45,7 +45,7 @@ def another_function():
 
 
 # Custom logging with name, time and memory
-@TimeGuardian.measure(name="CustomName", elapsed=100, memory=5000) #(elapsed in ms, memory in bytes)
+@TimeGuardian.measure(name="CustomName", elapsed=True, memory=True) #(elapsed in ms, memory in bytes)
 def another_function():
     # function implementation
 ```
