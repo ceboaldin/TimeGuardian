@@ -12,7 +12,7 @@ configure_logging()
 
 class TimeGuardian:
     @staticmethod
-    def measure(_func=None, *, name=None, elapsed=True, memory=False):
+    def measure(_func=None, *, name: str = None, elapsed: bool = True, memory: bool = False) -> callable:
         """
         A decorator to measure and log the execution time of a function.
 
@@ -89,7 +89,7 @@ class TimeGuardian:
             return decorator(_func)
 
     @staticmethod
-    def monitor(_func=None, *, name=None, elapsed=None, memory=None):
+    def monitor(_func=None, *, name: str = None, elapsed: int = None, memory: int = None) -> callable:
         """
         A decorator to monitor and log the execution time and memory usage of a function. Logs only if execution time or memory usage exceeds the specified limits.
 
