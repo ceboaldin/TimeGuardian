@@ -1,6 +1,7 @@
 # test_decorators.py
 import pytest
 from unittest.mock import ANY
+from unittest.mock import patch
 
 
 def test_simple_function(simple_function, mocker):
@@ -88,3 +89,49 @@ def test_slow_function_logs_time(slow_function, mocker):
     result = slow_function()
     assert result == "slow"
     mock_logger.info.assert_called_with(ANY)
+
+@pytest.mark.asyncio
+async def test_async_function(async_function):
+    """
+    Test case for an asynchronous function.
+
+    Args:
+        async_function: The async function to be tested.
+
+    Returns:
+        None
+    """
+    with patch('timeguardian.decorators.logger') as mock_logger:
+        await async_function()
+        mock_logger.info.assert_called_with(ANY)
+
+def test_memory_logging(memory_intensive_function):
+    """
+    Test case to verify that the memory logging occurs correctly.
+
+    Args:
+        memory_intensive_function: The function to be tested.
+
+    Returns:
+        None
+    """
+    with patch('timeguardian.decorators.logger') as mock_logger:
+        memory_intensive_function()
+        mock_logger.info.assert_called()
+
+def test_custom_name_logging(custom_named_function):
+    """
+    Test case to verify that logging with a custom name works.
+
+    Args:
+        custom_named_function: The function to be tested.
+
+    Returns:
+        None
+    """
+    with patch('timeguardian.decorators.logger') as mock_logger:
+        custom_named_function()
+        mock_logger.info.assert_called_with(ANY)
+
+
+

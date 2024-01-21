@@ -38,49 +38,57 @@ class TimeGuardian:
             if asyncio.iscoroutinefunction(func):
                 @wraps(func)
                 async def wrapper(*args, **kwargs):
-                    if elapsed:
-                        start_time = time.time()
-                    if memory:
-                        start_memory = psutil.Process().memory_info().rss
                     try:
-                        result = await func(*args, **kwargs)
-                    finally:
-                        if memory:
-                            end_memory = psutil.Process().memory_info().rss
-                            memory_usage = end_memory - start_memory
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Memory usage: {memory_usage} bytes'
-                            logger.info(log_message)
                         if elapsed:
-                            end_time = time.time()
-                            elapsed_time = (end_time - start_time) * 1000
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Elapsed time: {elapsed_time:.3f}ms'
-                            logger.info(log_message)
-                    return result
+                            start_time = time.time()
+                        if memory:
+                            start_memory = psutil.Process().memory_info().rss
+                        try:
+                            result = await func(*args, **kwargs)
+                        finally:
+                            if memory:
+                                end_memory = psutil.Process().memory_info().rss
+                                memory_usage = end_memory - start_memory
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Memory usage: {memory_usage} bytes'
+                                logger.info(log_message)
+                            if elapsed:
+                                end_time = time.time()
+                                elapsed_time = (end_time - start_time) * 1000
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                logger.info(log_message)
+                        return result
+                    except Exception as e:
+                        logger.error(f'{name} - Exception occurred: {str(e)}')
+                        raise  # re-raise the exception to maintain the original behavior
             else:
                 @wraps(func)
                 def wrapper(*args, **kwargs):
-                    if elapsed:
-                        start_time = time.time()
-                    if memory:
-                        start_memory = psutil.Process().memory_info().rss
                     try:
-                        result = func(*args, **kwargs)
-                    finally:
-                        if memory:
-                            end_memory = psutil.Process().memory_info().rss
-                            memory_usage = end_memory - start_memory
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Memory usage: {memory_usage} bytes'
-                            logger.info(log_message)
                         if elapsed:
-                            end_time = time.time()
-                            elapsed_time = (end_time - start_time) * 1000
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Elapsed time: {elapsed_time:.3f}ms'
-                            logger.info(log_message)
-                    return result
+                            start_time = time.time()
+                        if memory:
+                            start_memory = psutil.Process().memory_info().rss
+                        try:
+                            result = func(*args, **kwargs)
+                        finally:
+                            if memory:
+                                end_memory = psutil.Process().memory_info().rss
+                                memory_usage = end_memory - start_memory
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Memory usage: {memory_usage} bytes'
+                                logger.info(log_message)
+                            if elapsed:
+                                end_time = time.time()
+                                elapsed_time = (end_time - start_time) * 1000
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                logger.info(log_message)
+                        return result
+                    except Exception as e:
+                        logger.error(f'{name} - Exception occurred: {str(e)}')
+                        raise  # re-raise the exception to maintain the original behavior
             return wrapper
 
         if _func is None:
@@ -111,46 +119,54 @@ class TimeGuardian:
             if asyncio.iscoroutinefunction(func):
                 @wraps(func)
                 async def wrapper(*args, **kwargs):
-                    start_time = time.time()
-                    start_memory = psutil.Process().memory_info().rss
                     try:
-                        result = await func(*args, **kwargs)
-                    finally:
-                        end_time = time.time()
-                        end_memory = psutil.Process().memory_info().rss
-                        elapsed_time = (end_time - start_time) * 1000
-                        memory_usage = end_memory - start_memory
-                        if elapsed is not None and elapsed_time > elapsed:
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Elapsed time: {elapsed_time:.3f}ms'
-                            logger.info(log_message)
-                        if memory is not None and memory_usage > memory:
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Memory usage: {memory_usage} bytes'
-                            logger.info(log_message)
-                    return result
+                        start_time = time.time()
+                        start_memory = psutil.Process().memory_info().rss
+                        try:
+                            result = await func(*args, **kwargs)
+                        finally:
+                            end_time = time.time()
+                            end_memory = psutil.Process().memory_info().rss
+                            elapsed_time = (end_time - start_time) * 1000
+                            memory_usage = end_memory - start_memory
+                            if elapsed is not None and elapsed_time > elapsed:
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                logger.info(log_message)
+                            if memory is not None and memory_usage > memory:
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Memory usage: {memory_usage} bytes'
+                                logger.info(log_message)
+                        return result
+                    except Exception as e:
+                        logger.error(f'{name} - Exception occurred: {str(e)}')
+                        raise 
             else:
                 @wraps(func)
                 def wrapper(*args, **kwargs):
-                    start_time = time.time()
-                    start_memory = psutil.Process().memory_info().rss
                     try:
-                        result = func(*args, **kwargs)
-                    finally:
-                        end_time = time.time()
-                        end_memory = psutil.Process().memory_info().rss
-                        elapsed_time = (end_time - start_time) * 1000
-                        memory_usage = end_memory - start_memory
-                        if elapsed is not None and elapsed_time > elapsed:
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Elapsed time: {elapsed_time:.3f}ms'
-                            logger.info(log_message)
-                        if memory is not None and memory_usage > memory:
-                            log_message = f'{name} - ' if name else ''
-                            log_message += f'Memory usage: {memory_usage} bytes'
-                            logger.info(log_message)
+                        start_time = time.time()
+                        start_memory = psutil.Process().memory_info().rss
+                        try:
+                            result = func(*args, **kwargs)
+                        finally:
+                            end_time = time.time()
+                            end_memory = psutil.Process().memory_info().rss
+                            elapsed_time = (end_time - start_time) * 1000
+                            memory_usage = end_memory - start_memory
+                            if elapsed is not None and elapsed_time > elapsed:
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                logger.info(log_message)
+                            if memory is not None and memory_usage > memory:
+                                log_message = f'{name} - ' if name else ''
+                                log_message += f'Memory usage: {memory_usage} bytes'
+                                logger.info(log_message)
 
-                    return result
+                        return result
+                    except Exception as e:
+                        logger.error(f'{name} - Exception occurred: {str(e)}')
+                        raise 
             return wrapper
 
         if _func is None:
