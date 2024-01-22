@@ -11,6 +11,40 @@ logger = logging.getLogger("TimeGuardian")
 configure_logging()
 
 class TimeGuardian:
+    # Class variables to store the units for time and memory
+    time_unit = 'ms'  # default unit milliseconds
+    memory_unit = 'bytes'  # default unit bytes
+
+    @classmethod
+    def set_time_unit(cls, unit):
+        """ Set the global unit for time measurement. """
+        cls.time_unit = unit
+
+    @classmethod
+    def set_memory_unit(cls, unit):
+        """ Set the global unit for memory measurement. """
+        cls.memory_unit = unit
+
+    @staticmethod
+    def convert_time(time_in_seconds):
+        """ Convert time from seconds to the set unit. """
+        if TimeGuardian.time_unit == 'ms':
+            return time_in_seconds * 1000  # Convert to milliseconds
+        elif TimeGuardian.time_unit == 's':
+            return time_in_seconds  # Already in seconds
+        # Add more unit conversions here
+
+    @staticmethod
+    def convert_memory(memory_in_bytes):
+        """ Convert memory from bytes to the set unit. """
+        if TimeGuardian.memory_unit == 'bytes':
+            return memory_in_bytes  # Already in bytes
+        elif TimeGuardian.memory_unit == 'KB':
+            return memory_in_bytes / 1024  # Convert to kilobytes
+        elif TimeGuardian.memory_unit == 'MB':
+            return memory_in_bytes / (1024 * 1024)  # Convert to megabytes
+        # Add more unit conversions here
+
     @staticmethod
     def measure(_func=None, *, name: str = None, elapsed: bool = True, memory: bool = False) -> callable:
         """
@@ -48,15 +82,15 @@ class TimeGuardian:
                         finally:
                             if memory:
                                 end_memory = psutil.Process().memory_info().rss
-                                memory_usage = end_memory - start_memory
+                                memory_usage = TimeGuardian.convert_memory(end_memory - start_memory)
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Memory usage: {memory_usage} bytes'
+                                log_message += f'Memory usage: {memory_usage} {TimeGuardian.memory_unit}'
                                 logger.info(log_message)
                             if elapsed:
                                 end_time = time.time()
-                                elapsed_time = (end_time - start_time) * 1000
+                                elapsed_time = TimeGuardian.convert_time(end_time - start_time)
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                log_message += f'Elapsed time: {elapsed_time} {TimeGuardian.time_unit}'
                                 logger.info(log_message)
                         return result
                     except Exception as e:
@@ -75,15 +109,15 @@ class TimeGuardian:
                         finally:
                             if memory:
                                 end_memory = psutil.Process().memory_info().rss
-                                memory_usage = end_memory - start_memory
+                                memory_usage = TimeGuardian.convert_memory(end_memory - start_memory)
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Memory usage: {memory_usage} bytes'
+                                log_message += f'Memory usage: {memory_usage} {TimeGuardian.memory_unit}'
                                 logger.info(log_message)
                             if elapsed:
                                 end_time = time.time()
-                                elapsed_time = (end_time - start_time) * 1000
+                                elapsed_time = TimeGuardian.convert_time(end_time - start_time)
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                log_message += f'Elapsed time: {elapsed_time} {TimeGuardian.time_unit}'
                                 logger.info(log_message)
                         return result
                     except Exception as e:
@@ -127,15 +161,15 @@ class TimeGuardian:
                         finally:
                             end_time = time.time()
                             end_memory = psutil.Process().memory_info().rss
-                            elapsed_time = (end_time - start_time) * 1000
-                            memory_usage = end_memory - start_memory
+                            elapsed_time = TimeGuardian.convert_time(end_time - start_time)
+                            memory_usage = TimeGuardian.convert_memory(end_memory - start_memory)
                             if elapsed is not None and elapsed_time > elapsed:
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                log_message += f'Elapsed time: {elapsed_time} {TimeGuardian.time_unit}'
                                 logger.info(log_message)
                             if memory is not None and memory_usage > memory:
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Memory usage: {memory_usage} bytes'
+                                log_message += f'Memory usage: {memory_usage} {TimeGuardian.memory_unit}'
                                 logger.info(log_message)
                         return result
                     except Exception as e:
@@ -152,15 +186,15 @@ class TimeGuardian:
                         finally:
                             end_time = time.time()
                             end_memory = psutil.Process().memory_info().rss
-                            elapsed_time = (end_time - start_time) * 1000
-                            memory_usage = end_memory - start_memory
+                            elapsed_time = TimeGuardian.convert_time(end_time - start_time)
+                            memory_usage = TimeGuardian.convert_memory(end_memory - start_memory)
                             if elapsed is not None and elapsed_time > elapsed:
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Elapsed time: {elapsed_time:.3f}ms'
+                                log_message += f'Elapsed time: {elapsed_time} {TimeGuardian.time_unit}'
                                 logger.info(log_message)
                             if memory is not None and memory_usage > memory:
                                 log_message = f'{name} - ' if name else ''
-                                log_message += f'Memory usage: {memory_usage} bytes'
+                                log_message += f'Memory usage: {memory_usage} {TimeGuardian.memory_unit}'
                                 logger.info(log_message)
 
                         return result
