@@ -63,6 +63,36 @@ def monitored_function():
     # function implementation
 ```
 
+## Setting Global Units for Time and Memory Measurement
+
+The TimeGuardian package allows you to set global units for time and memory measurements. This feature enables you to customize how the execution time and memory usage are reported.
+
+### Usage
+
+1. **Set the Units**: Use `TimeGuardian.set_time_unit(unit)` and `TimeGuardian.set_memory_unit(unit)` to set the global units for time and memory measurement. The `unit` parameter should be a string indicating the desired unit (e.g., 'ms' for milliseconds, 's' for seconds, 'bytes' for bytes, 'KB' for kilobytes, 'MB' for megabytes).
+
+2. **Decorate Functions**: Apply the `@TimeGuardian.measure` decorator to your functions. This decorator will use the globally set units to measure and log the execution time and memory usage.
+
+### Example
+
+```python
+from decorators import TimeGuardian
+
+# Set the units for time and memory measurements
+TimeGuardian.set_time_unit('ms')  # Set time unit to milliseconds
+TimeGuardian.set_memory_unit('MB')  # Set memory unit to megabytes
+
+@TimeGuardian.measure(elapsed=True, memory=True, name="Sample Function")
+def sample_function():
+    # Function implementation
+    ...
+
+# Call the decorated function
+sample_function()
+```
+
+In this example, `sample_function` is measured and logged in milliseconds for time and megabytes for memory usage.
+
 ## Contributing
 
 Contributions to TimeGuardian are welcome!
